@@ -162,6 +162,17 @@ h1 em { font-weight: 600; color: #fff0be; }
   .auth-legal { margin-top: 16px; }
   .field input { height: 46px; }
 }
+
+/* Separate Vans customer storefront: a red, white, and black visual system. */
+.customer-header-actions .customer-vans-link { min-height: 34px; padding: 0 12px; display: inline-flex; align-items: center; gap: 8px; color: #fff; background: #e2231a; border: 1px solid #e2231a; text-decoration: none; font-weight: 700; }
+.customer-header-actions .customer-vans-link:hover { color: #e2231a; background: transparent; }
+.customer-welcome-links .customer-vans-button { color: #f3f5f4; font-size: 9px; text-decoration: none; border-bottom: 1px solid #e2231a; padding-bottom: 5px; }
+.pdd-product-filters { margin: -5px 0 21px; display: flex; flex-wrap: wrap; gap: 8px; }
+.pdd-product-filters button { min-height: 30px; padding: 0 13px; border: 1px solid #35543c; border-radius: 2px; color: #c5d0c7; background: #07110a; font: 700 8px 'DM Sans',sans-serif; cursor: pointer; transition: color .18s,background .18s,border-color .18s; }
+.pdd-product-filters button:hover,.pdd-product-filters button.is-selected { color: #031007; background: var(--customer-green); border-color: var(--customer-green); }
+#pdd-product-grid [data-product-category][hidden] { display: none; }
+.pdd-products-empty { margin: 0; padding: 20px; color: #94a398; border: 1px dashed #294330; font-size: 10px; }
+.vans-cart-page { --customer-green: #e2231a; color: #191919; background: #fff; }.vans-cart-page .customer-header { color: #111; background: #fff; border-color: #e4e4e4; }.vans-cart-page .customer-brand,.vans-cart-page .customer-header nav a,.vans-cart-page .customer-header-actions > a { color: #111; }.vans-cart-page .customer-brand-mark { color: white; background: #e2231a; }.vans-cart-page .customer-page-main > h1,.vans-cart-page .customer-cart-summary h2,.vans-cart-page .customer-checkout-side h2,.vans-cart-page .customer-checkout-items > h2 { color: #161616; }.vans-cart-page .customer-page-lede,.vans-cart-page .customer-cart-detail > span,.vans-cart-page .customer-cart-summary small,.vans-cart-page .customer-checkout-side > p:not(.customer-kicker) { color: #5f5f5f; }.vans-cart-page .customer-cart-items,.vans-cart-page .customer-cart-summary,.vans-cart-page .customer-checkout-items,.vans-cart-page .customer-checkout-side,.vans-cart-page .customer-order-card { background: #fff; border-color: #ddd; }.vans-cart-page .customer-cart-detail h2,.vans-cart-page .customer-cart-total,.vans-cart-page .customer-checkout-line strong,.vans-cart-page .customer-order-lines { color: #171717; }.vans-cart-page .customer-cart-row,.vans-cart-page .customer-checkout-line,.vans-cart-page .customer-order-heading,.vans-cart-page .customer-order-lines,.vans-cart-page .customer-order-footer { border-color: #e5e5e5; }.vans-cart-page .customer-cart-update input,.vans-cart-page .customer-address-fields input,.vans-cart-page .customer-note-field textarea,.vans-cart-page .customer-order-steps li > span { color: #111; background: #fff; border-color: #bbb; }.vans-cart-page .customer-button { color: white; background: #e2231a; border-color: #e2231a; }.vans-cart-page .customer-footer { color: #555; border-color: #ddd; }.vans-cart-page .customer-footer > span:first-child { color: #e2231a; }
 @media (max-width: 360px) {
   .auth-panel { padding-left: 18px; padding-right: 18px; }
   .site-footer { width: calc(100% - 28px); font-size: 7px; }

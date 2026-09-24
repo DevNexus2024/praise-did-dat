@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 try {
     $db = pdd_catalog_db();
-    $items = $db->query('SELECT id, kind, name, description, price, image_url FROM catalog_items WHERE active = 1 ORDER BY id ASC')->fetchAll();
+    $items = $db->query("SELECT id, kind, name, description, price, image_url FROM catalog_items WHERE active = 1 AND brand = 'praise' ORDER BY id ASC")->fetchAll();
     echo json_encode([
         'products' => array_values(array_filter($items, static fn(array $item): bool => $item['kind'] === 'product')),
         'services' => array_values(array_filter($items, static fn(array $item): bool => $item['kind'] === 'service')),

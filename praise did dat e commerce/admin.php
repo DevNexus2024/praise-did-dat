@@ -182,8 +182,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $db instanceof PDO) {
             $imagePath = 'assets/uploads/catalog/' . $imageFileName;
         }
 
-        $statement = $db->prepare('INSERT INTO catalog_items (kind, name, description, price, image_url) VALUES (:kind, :name, :description, :price, :image_url)');
-        $statement->execute(['kind' => $kind, 'name' => $name, 'description' => $description, 'price' => $price, 'image_url' => $imagePath]);
+        $brand = $kind === 'product' && ($_POST['brand'] ?? '') === 'vans' ? 'vans' : 'praise';
+        $category = $kind === 'product' ? trim((string) ($_POST['category'] ?? '')) : '';
+        if (mb_strlen($category) > 80) {
+            $redirectWithNotice('Keep the product category to 80 characters or fewer.', true);
+        }
+        if ($brand === 'vans' && $category === '') $category = 'Other';
+        $currency = $brand === 'vans' ? 'ZAR' : 'SZL';
+        $statement = $db->prepare('INSERT INTO catalog_items (kind, brand, name, category, description, price, currency, image_url) VALUES (:kind, :brand, :name, :category, :description, :price, :currency, :image_url)');
+        $statement->execute(['kind' => $kind, 'brand' => $brand, 'name' => $name, 'category' => $category !== '' ? $category : null, 'description' => $description, 'price' => $price, 'currency' => $currency, 'image_url' => $imagePath]);
         $redirectWithNotice(ucfirst($kind) . ' added to the live catalog.');
     }
 
@@ -228,7 +235,7 @@ $orders = [];
 $summary = ['products' => 0, 'services' => 0, 'views' => 0, 'clicks' => 0];
 $range = '7 days';
 if ($authenticated && $db instanceof PDO) {
-    $items = $db->query("SELECT i.id, i.kind, i.name, i.description, i.price, i.image_url, i.active, i.created_at,
+    $items = $db->query("SELECT i.id, i.kind, i.brand, i.category, i.currency, i.name, i.description, i.price, i.image_url, i.active, i.created_at,
         SUM(CASE WHEN e.event_type = 'view' AND e.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) AS views_7d,
         SUM(CASE WHEN e.event_type = 'click' AND e.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) AS clicks_7d
         FROM catalog_items i LEFT JOIN catalog_events e ON e.catalog_item_id = i.id
@@ -280,9 +287,11 @@ $ctr = $summary['views'] > 0 ? round(($summary['clicks'] / $summary['views']) * 
       <section class="admin-content-grid"><div class="admin-panel admin-add-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">GROW THE GOOD STUFF</p><h2>Add to your catalog</h2></div><span class="admin-heading-spark">✳</span></div><p class="admin-panel-intro" id="catalog-form-intro">Add a product or a service. New live items show up on the storefront automatically.</p>
         <form class="admin-item-form" method="post" action="admin.php" enctype="multipart/form-data"><input type="hidden" name="csrf_token" value="<?= $escape(pdd_csrf_token()) ?>" /><input type="hidden" name="action" value="add_item" />
           <label>What are we adding?<select name="kind" id="catalog-kind"><option value="product">A product</option><option value="service">A service</option><?php if ($isOwner): ?><option value="admin">An admin</option><?php endif; ?></select></label>
+          <label class="catalog-only" id="catalog-brand-field" hidden>Store<select name="brand" id="catalog-brand"><option value="praise">Praise Did Dat</option><option value="vans">Vans</option></select></label>
+          <label class="catalog-only" id="catalog-category-field" hidden>Product category<input type="text" name="category" maxlength="80" placeholder="Cases, stickers, custom designs" /></label>
           <label class="catalog-only">Name<input type="text" name="name" maxlength="80" placeholder="e.g. Custom iPhone Waffle Case" required /></label>
           <label class="catalog-only">Tell us a little about it<textarea name="description" maxlength="1200" rows="4" placeholder="What makes it special?" required></textarea></label>
-          <div class="admin-form-row catalog-only"><label>Price <span class="admin-field-hint">(E)</span><input type="number" name="price" min="0" max="100000000" step="0.01" placeholder="320" /></label><label>Import image <span class="admin-field-hint">(optional · JPG, PNG, WebP · up to 5 MB)</span><input type="file" name="image_file" accept="image/jpeg,image/png,image/webp" /></label></div>
+          <div class="admin-form-row catalog-only"><label>Price <span class="admin-field-hint" id="catalog-price-currency">(E)</span><input type="number" name="price" min="0" max="100000000" step="0.01" placeholder="320" /></label><label>Import image <span class="admin-field-hint">(optional · JPG, PNG, WebP · up to 5 MB)</span><input type="file" name="image_file" accept="image/jpeg,image/png,image/webp" /></label></div>
           <p class="admin-form-help catalog-only">Choose an image stored on this device. Images from other sources can be downloaded first, then imported here.</p>
           <p class="admin-form-help catalog-only" id="catalog-kind-help">Products need a price. Leave a service price blank if you quote per project.</p>
           <?php if ($isOwner): ?><div id="admin-account-fields" hidden><label>Admin email<input type="email" name="admin_email" maxlength="254" autocomplete="off" placeholder="newadmin@example.com" disabled required /></label><div class="admin-form-row"><label>Password<input type="password" name="admin_password" autocomplete="new-password" minlength="12" placeholder="At least 12 characters" disabled required /></label><label>Confirm password<input type="password" name="admin_password_confirmation" autocomplete="new-password" minlength="12" placeholder="Type it again" disabled required /></label></div><p class="admin-form-help">Only the original admin can create admin accounts. Passwords are stored as secure hashes.</p></div><?php endif; ?>
@@ -291,7 +300,7 @@ $ctr = $summary['views'] > 0 ? round(($summary['clicks'] / $summary['views']) * 
       </div>
 
       <div class="admin-panel admin-performance"><div class="admin-panel-heading"><div><p class="admin-kicker">WHAT’S GETTING LOVE</p><h2>Catalog performance</h2></div><span class="admin-period">LAST 7 DAYS</span></div><p class="admin-panel-intro">Views are counted when an item enters the visitor’s screen. Actions are product clicks or service enquiries.</p>
-        <?php if (!$items): ?><div class="admin-empty">Your catalog will show up here.</div><?php else: ?><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>ITEM</th><th>TYPE</th><th>VIEWS</th><th>CLICKS</th><th>CTR</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody><?php foreach ($items as $item): ?><?php $itemCtr = (int) $item['views_7d'] > 0 ? round(((int) $item['clicks_7d'] / (int) $item['views_7d']) * 100, 1) : 0; ?><tr><td><strong><?= $escape($item['name']) ?></strong><?php if ($item['price'] !== null): ?><small>E<?= number_format((float) $item['price'], 2) ?></small><?php endif; ?></td><td><span class="admin-type-tag"><?= $escape($item['kind']) ?></span></td><td><?= number_format((int) $item['views_7d']) ?></td><td><?= number_format((int) $item['clicks_7d']) ?></td><td><?= number_format($itemCtr, 1) ?>%</td><td><span class="admin-status<?= (int) $item['active'] === 1 ? ' is-live' : '' ?>"><?= (int) $item['active'] === 1 ? 'Active' : 'Inactive' ?></span></td><td><div class="admin-row-actions"><form method="post" action="admin.php"><input type="hidden" name="csrf_token" value="<?= $escape(pdd_csrf_token()) ?>" /><input type="hidden" name="action" value="activate_item" /><input type="hidden" name="item_id" value="<?= (int) $item['id'] ?>" /><button class="admin-toggle" type="submit"<?= (int) $item['active'] === 1 ? ' disabled aria-disabled="true"' : '' ?>>Active</button></form><form method="post" action="admin.php" onsubmit="return confirm('Delete this catalog item permanently?');"><input type="hidden" name="csrf_token" value="<?= $escape(pdd_csrf_token()) ?>" /><input type="hidden" name="action" value="delete_item" /><input type="hidden" name="item_id" value="<?= (int) $item['id'] ?>" /><button class="admin-delete" type="submit">Delete</button></form></div></td></tr><?php endforeach; ?></tbody></table></div><?php endif; ?>
+        <?php if (!$items): ?><div class="admin-empty">Your catalog will show up here.</div><?php else: ?><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>ITEM</th><th>TYPE / STORE</th><th>VIEWS</th><th>CLICKS</th><th>CTR</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody><?php foreach ($items as $item): ?><?php $itemCtr = (int) $item['views_7d'] > 0 ? round(((int) $item['clicks_7d'] / (int) $item['views_7d']) * 100, 1) : 0; ?><tr><td><strong><?= $escape($item['name']) ?></strong><?php if ($item['price'] !== null): ?><small><?= $escape($item['currency']) ?> <?= number_format((float) $item['price'], 2) ?></small><?php endif; ?></td><td><span class="admin-type-tag"><?= $escape($item['kind']) ?></span><small><?= $item['brand'] === 'vans' ? 'Vans' : 'Praise Did Dat' ?><?= !empty($item['category']) ? ' · ' . $escape($item['category']) : '' ?></small></td><td><?= number_format((int) $item['views_7d']) ?></td><td><?= number_format((int) $item['clicks_7d']) ?></td><td><?= number_format($itemCtr, 1) ?>%</td><td><span class="admin-status<?= (int) $item['active'] === 1 ? ' is-live' : '' ?>"><?= (int) $item['active'] === 1 ? 'Active' : 'Inactive' ?></span></td><td><div class="admin-row-actions"><form method="post" action="admin.php"><input type="hidden" name="csrf_token" value="<?= $escape(pdd_csrf_token()) ?>" /><input type="hidden" name="action" value="activate_item" /><input type="hidden" name="item_id" value="<?= (int) $item['id'] ?>" /><button class="admin-toggle" type="submit"<?= (int) $item['active'] === 1 ? ' disabled aria-disabled="true"' : '' ?>>Active</button></form><form method="post" action="admin.php" onsubmit="return confirm('Delete this catalog item permanently?');"><input type="hidden" name="csrf_token" value="<?= $escape(pdd_csrf_token()) ?>" /><input type="hidden" name="action" value="delete_item" /><input type="hidden" name="item_id" value="<?= (int) $item['id'] ?>" /><button class="admin-delete" type="submit">Delete</button></form></div></td></tr><?php endforeach; ?></tbody></table></div><?php endif; ?>
         <div class="admin-analytics-note"><span>↗</span><p>These are engagement metrics, not sales. Order and revenue analytics can be added when checkout is connected.</p></div>
       </div></section>
       <section class="admin-panel admin-orders-panel"><div class="admin-panel-heading"><div><p class="admin-kicker">KEEP CUSTOMERS IN THE LOOP</p><h2>Recent orders</h2></div><span class="admin-period">LATEST 50</span></div><p class="admin-panel-intro">Update an order’s status here; the customer can follow progress under My Orders.</p>
@@ -311,6 +320,10 @@ $ctr = $summary['views'] > 0 ? round(($summary['clicks'] / $summary['views']) * 
       const submitButton = document.querySelector('#catalog-submit');
       const intro = document.querySelector('#catalog-form-intro');
       const kindHelp = document.querySelector('#catalog-kind-help');
+      const brandField = document.querySelector('#catalog-brand-field');
+      const categoryField = document.querySelector('#catalog-category-field');
+      const brandSelect = document.querySelector('#catalog-brand');
+      const priceCurrency = document.querySelector('#catalog-price-currency');
       const updateCatalogForm = () => {
         const isAdmin = catalogKind.value === 'admin';
         catalogFields.forEach((field) => { field.hidden = isAdmin; });
@@ -318,12 +331,20 @@ $ctr = $summary['views'] > 0 ? round(($summary['clicks'] / $summary['views']) * 
         adminInputs.forEach((input) => { input.disabled = !isAdmin; });
         if (adminFields) adminFields.hidden = !isAdmin;
         if (priceInput) priceInput.required = catalogKind.value === 'product';
+        const isProduct = catalogKind.value === 'product';
+        if (brandField) brandField.hidden = !isProduct;
+        if (categoryField) categoryField.hidden = !isProduct;
+        if (brandSelect) brandSelect.disabled = !isProduct;
+        if (priceCurrency) priceCurrency.textContent = isProduct && brandSelect && brandSelect.value === 'vans' ? '(R)' : '(E)';
+        const categoryInput = document.querySelector('[name="category"]');
+        if (categoryInput) categoryInput.disabled = !isProduct;
         if (kindHelp && catalogKind.value === 'service') kindHelp.textContent = 'Leave the price blank if you quote per project.';
         else if (kindHelp && catalogKind.value === 'product') kindHelp.textContent = 'Products need a price.';
         if (intro) intro.textContent = isAdmin ? 'Create an admin login for someone you trust to manage the shop.' : 'Add a product or service. New live items show up on the storefront automatically.';
         if (submitButton && submitButton.firstChild) submitButton.firstChild.nodeValue = isAdmin ? 'Create admin account ' : 'Add to storefront ';
       };
       catalogKind.addEventListener('change', updateCatalogForm);
+      if (brandSelect) brandSelect.addEventListener('change', updateCatalogForm);
       updateCatalogForm();
     }
   </script>

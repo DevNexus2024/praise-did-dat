@@ -38,6 +38,16 @@ function pdd_db(): PDO
         $pdo->exec("ALTER TABLE admins ADD COLUMN role ENUM('owner', 'admin') NOT NULL DEFAULT 'admin' AFTER password_hash");
     }
 
+    // Split the customer storefront catalog into brands and browsable categories.
+    $brandColumn = $pdo->query("SHOW COLUMNS FROM catalog_items LIKE 'brand'")->fetch();
+    if (!$brandColumn) {
+        $pdo->exec("ALTER TABLE catalog_items ADD COLUMN brand VARCHAR(32) NOT NULL DEFAULT 'praise' AFTER kind");
+    }
+    $categoryColumn = $pdo->query("SHOW COLUMNS FROM catalog_items LIKE 'category'")->fetch();
+    if (!$categoryColumn) {
+        $pdo->exec('ALTER TABLE catalog_items ADD COLUMN category VARCHAR(80) NULL AFTER name');
+    }
+
     // The earliest existing admin is the original owner on upgraded databases.
     $ownerId = $pdo->query("SELECT id FROM admins WHERE role = 'owner' LIMIT 1")->fetchColumn();
     if (!$ownerId) {

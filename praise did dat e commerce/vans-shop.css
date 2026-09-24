@@ -1,0 +1,90 @@
+/* Vans storefront theme — Vans red, black, and white. */
+.vans-store { --vans-red: #e2231a; --vans-ink: #101010; --vans-paper: #fff; --vans-soft: #f3f2ef; margin: 0; color: var(--vans-ink); background: var(--vans-paper); font-family: 'DM Sans', Arial, sans-serif; }
+.vans-promo-bar { min-height: 26px; display: grid; place-items: center; color: #fff; background: #111; font-size: 8px; font-weight: 700; letter-spacing: 1.4px; }
+.vans-header { min-height: 64px; padding: 0 max(4%,calc((100vw - 1320px)/2)); display: flex; align-items: center; justify-content: space-between; gap: 24px; background: #fff; border-bottom: 1px solid #e5e5e5; }
+.vans-wordmark { color: var(--vans-red); font: 700 34px/1 'Oswald',Impact,sans-serif; letter-spacing: -2px; text-decoration: none; }
+.vans-wordmark span { display: inline-block; margin-left: 2px; vertical-align: top; font: 600 8px 'DM Sans',sans-serif; letter-spacing: 0; }
+.vans-header nav,.vans-header-actions { display: flex; align-items: center; gap: clamp(12px,2vw,30px); }
+.vans-header nav a,.vans-header-actions a,.vans-header-actions span { color: #111; text-decoration: none; font-size: 10px; font-weight: 700; }
+.vans-header nav a:hover,.vans-header-actions a:hover { color: var(--vans-red); }
+.vans-header-actions b { min-width: 18px; height: 18px; margin-left: 4px; display: inline-grid; place-items: center; border-radius: 50%; color: white; background: var(--vans-red); font-size: 8px; }
+.vans-header-actions a.vans-signout { min-height: 35px; padding: 0 13px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; color: #fff; background: var(--vans-red); border: 1px solid var(--vans-red); font-size: 9px; font-weight: 800; letter-spacing: .25px; }
+.vans-header-actions a.vans-signout:hover { color: #fff; background: #111; border-color: #111; }
+.vans-header-actions a.vans-signout:focus-visible,.vans-footer-signout:focus-visible { outline: 3px solid #111; outline-offset: 3px; }
+.vans-hero { min-height: min(690px,75vw); padding: 70px max(8%,calc((100vw - 1160px)/2)); position: relative; display: grid; grid-template-columns: 1fr 1.2fr; align-items: center; gap: 30px; overflow: hidden; color: #fff; background: #111; }
+.vans-hero::before { content: ''; position: absolute; inset: 0 0 0 42%; background: linear-gradient(110deg,#111 4%,transparent 39%),linear-gradient(0deg,#090909c9,#09090912 52%),linear-gradient(120deg,#43100c,#c91e17 48%,#171717 100%); }
+.vans-hero-copy,.vans-hero-art { z-index: 1; position: relative; }
+.vans-eyebrow { margin: 0 0 12px; color: var(--vans-red); font-size: 8px; font-weight: 800; letter-spacing: 1.4px; }
+.vans-hero .vans-eyebrow { color: #ff5148; }
+.vans-hero h1,.vans-brand-band h2 { margin: 0; color: #fff; font: 700 clamp(48px,8vw,105px)/.9 'Oswald',Impact,sans-serif; letter-spacing: -1.5px; }
+.vans-hero-copy > p:not(.vans-eyebrow) { max-width: 360px; margin: 22px 0 24px; color: #e5e5e5; font-size: 12px; line-height: 1.6; }
+.vans-red-button { min-height: 42px; width: fit-content; padding: 0 17px; display: inline-flex; align-items: center; justify-content: space-between; gap: 26px; color: white; background: var(--vans-red); border: 1px solid var(--vans-red); text-decoration: none; font-size: 8px; font-weight: 800; letter-spacing: .45px; }
+.vans-red-button:hover { color: var(--vans-red); background: #fff; }
+.vans-hero-art { height: min(440px,48vw); min-height: 280px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: linear-gradient(142deg,#383838,#100e0e 63%,#520f0d); box-shadow: 0 24px 70px #0006; transform: rotate(1deg); }
+.vans-hero-art::before { content: ''; position: absolute; inset: auto -10% -17% -10%; height: 54%; background: linear-gradient(transparent,#080808 35%); transform: skewY(-8deg); }
+.vans-checker { width: 95px; height: 95px; position: absolute; top: 0; right: 0; background: conic-gradient(#fff 25%,#111 0 50%,#fff 0 75%,#111 0); background-size: 18px 18px; }
+.vans-hero-type { position: absolute; top: 28px; left: 30px; color: #ffffff80; font: 700 27px/.9 'Oswald',Impact,sans-serif; transform: rotate(-8deg); }
+.vans-hero-shoe { width: 78%; height: 28%; position: absolute; top: 48%; left: 11%; border-radius: 68% 32% 20% 20% / 74% 46% 18% 20%; background: linear-gradient(170deg,#f4f4f1 0 10%,#d6d4d0 13% 33%,#e2231a 35% 63%,#aa1a14 75% 86%,#f4f3f0 88%); box-shadow: 0 18px 0 -10px #161616,0 22px 0 -12px #fff,0 45px 40px #000b; transform: rotate(-7deg); }
+.vans-hero-shoe::before { content: 'VANS'; position: absolute; top: 34%; left: 49%; color: #f6f6f4; font: 700 21px 'Oswald',Impact,sans-serif; transform: rotate(-9deg); }
+.vans-hero-shoe::after { content: ''; width: 35%; height: 2px; position: absolute; top: 28%; left: 40%; background: #fafafa; box-shadow: 1px 7px #eee,4px 14px #eee,7px 21px #eee; transform: rotate(-5deg); }
+.vans-hero-shoe i,.vans-hero-shoe b { width: 11px; height: 11px; position: absolute; bottom: -14px; border: 3px solid #171717; border-radius: 50%; background: #e9e7e2; }
+.vans-hero-shoe i { left: 17%; }.vans-hero-shoe b { right: 15%; }
+.vans-hero-art small { position: absolute; bottom: 18px; left: 22px; color: #fff; font-size: 8px; letter-spacing: 1.8px; }
+.vans-hero-scroll { position: absolute; left: 50%; bottom: 22px; display: flex; gap: 12px; color: #eee; text-decoration: none; font-size: 7px; letter-spacing: 1px; transform: translateX(-50%); }
+.vans-categories,.vans-collection { padding: 58px max(5%,calc((100vw - 1240px)/2)); }
+.vans-section-heading { margin-bottom: 17px; padding-bottom: 13px; border-bottom: 1px solid #171717; }
+.vans-section-heading .vans-eyebrow,.vans-collection .vans-eyebrow { margin-bottom: 5px; }
+.vans-section-heading h2,.vans-collection-heading h2 { margin: 0; font: 700 30px 'Oswald',Impact,sans-serif; letter-spacing: -.3px; }
+.vans-category-links { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 15px; }
+.vans-category-links > a { min-width: 0; color: #111; text-decoration: none; }
+.vans-category-art { height: clamp(130px,20vw,245px); position: relative; display: grid; place-items: center; overflow: hidden; background: #efefed; }
+.vans-category-art::before { content: ''; position: absolute; width: 65%; height: 38%; border-radius: 70% 30% 18% 18%; background: #e2231a; box-shadow: 0 10px #fff,0 15px 0 -5px #111; transform: rotate(-12deg); }
+.vans-art-clothing::before { width: 37%; height: 72%; top: 15%; border-radius: 15px 15px 5px 5px; background: #1763aa; clip-path: polygon(24% 0,76% 0,100% 17%,84% 33%,79% 25%,79% 100%,21% 100%,21% 25%,16% 33%,0 17%); box-shadow: none; }
+.vans-art-accessories::before { width: 60%; height: 12%; border-radius: 999px; background: #222; box-shadow: 0 14px 0 -4px #e2231a; transform: rotate(-25deg); }
+.vans-category-art b { z-index: 1; color: #fff; font: 700 18px 'Oswald',Impact,sans-serif; text-shadow: 1px 1px #111; transform: rotate(-8deg); }
+.vans-category-links > a > strong { margin-top: 9px; display: block; font-size: 11px; }
+.vans-category-links > a > span:last-child { display: flex; justify-content: space-between; margin-top: 5px; color: #666; font-size: 8px; }.vans-category-links > a:hover .vans-category-art { outline: 2px solid var(--vans-red); outline-offset: -2px; }
+.vans-collection { padding-top: 42px; background: var(--vans-soft); }
+.vans-collection-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 21px; }
+.vans-collection-heading h2 { font-size: clamp(26px,4vw,37px); }
+.vans-collection-heading > span { color: #555; font-size: 8px; white-space: nowrap; }
+.vans-collection-heading > div > p:last-child { margin: 7px 0 0; color: #666; font-size: 9px; }
+.vans-tools { display: grid; grid-template-columns: minmax(170px,1.5fr) repeat(2,minmax(120px,.65fr)); gap: 8px; }
+.vans-tools label { display: grid; gap: 5px; color: #393939; font-size: 7px; font-weight: 700; }
+.vans-tools input,.vans-tools select { width: 100%; min-height: 37px; padding: 0 10px; border: 1px solid #aaa; border-radius: 0; color: #111; background: #fff; font: 9px 'DM Sans',sans-serif; }
+.vans-tools input:focus,.vans-tools select:focus { outline: 2px solid #e2231a55; border-color: var(--vans-red); }
+.vans-category-pills { display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0 18px; }
+.vans-category-pills button { min-height: 27px; padding: 0 12px; border: 1px solid #aaa; border-radius: 999px; color: #222; background: transparent; font: 700 7px 'DM Sans',sans-serif; cursor: pointer; }
+.vans-category-pills button.is-selected,.vans-category-pills button:hover { color: #fff; background: #111; border-color: #111; }
+.vans-product-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+.vans-product-card { min-width: 0; background: #fff; border: 1px solid #deddd9; box-shadow: 0 2px 7px #11100009; }
+.vans-product-card[hidden] { display: none; }
+.vans-product-image { height: clamp(185px,24vw,300px); position: relative; overflow: hidden; display: grid; place-items: center; background: #e5e4e0; }
+.vans-product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+.vans-product-card:hover .vans-product-image img { transform: scale(1.04); }
+.vans-product-tag { position: absolute; top: 10px; left: 10px; padding: 5px 7px; color: #fff; background: #111; font: 700 7px 'Oswald',Impact,sans-serif; letter-spacing: .5px; }
+.vans-favourite { width: 29px; height: 29px; position: absolute; top: 9px; right: 9px; border: 1px solid #ccc; border-radius: 50%; color: #111; background: #fff; font-size: 18px; cursor: pointer; }.vans-favourite.is-saved { color: var(--vans-red); }
+.vans-product-placeholder { width: 100%; height: 100%; position: relative; display: grid; place-items: center; overflow: hidden; background: repeating-linear-gradient(135deg,#e8e7e3,#e8e7e3 14px,#dddcd8 14px,#dddcd8 28px); }
+.vans-product-placeholder > span { position: absolute; top: 15px; left: 15px; padding: 5px 7px; color: #fff; background: #111; font: 700 7px 'Oswald',Impact,sans-serif; letter-spacing: 1px; }
+.vans-product-placeholder > b { z-index: 1; color: #e2231a; font: 700 clamp(27px,5vw,56px) 'Oswald',Impact,sans-serif; transform: rotate(-8deg); }
+.vans-product-placeholder .placeholder-shoe { width: 67%; height: 27%; position: absolute; top: 48%; left: 16%; border-radius: 64% 34% 20% 20% / 77% 44% 20% 20%; background: linear-gradient(165deg,#fafafa 0 16%,#262626 18% 57%,#e2231a 58% 67%,#fafafa 69%); box-shadow: 0 14px 0 -8px #111,0 24px 22px #1114; transform: rotate(-8deg); }
+.vans-product-placeholder .placeholder-shoe::before { content: 'VANS'; position: absolute; top: 38%; left: 46%; color: white; font: 700 16px 'Oswald',Impact,sans-serif; transform: rotate(-7deg); }
+.vans-product-placeholder .placeholder-garment { width: 37%; height: 54%; position: absolute; bottom: 10%; border-radius: 9px 9px 2px 2px; background: linear-gradient(90deg,#141414,#333 45%,#111); box-shadow: 0 12px 24px #1113; clip-path: polygon(22% 0,78% 0,100% 16%,86% 33%,80% 27%,80% 100%,20% 100%,20% 27%,14% 33%,0 16%); }
+.vans-product-copy { padding: 13px 13px 12px; }.vans-product-copy > p { margin: 0 0 4px; color: var(--vans-red); font-size: 7px; font-weight: 800; letter-spacing: .7px; }
+.vans-product-copy h3 { min-height: 32px; margin: 0 0 6px; color: #111; font-size: 13px; font-weight: 700; }
+.vans-product-rating { margin: 0 0 9px; color: #111; font-size: 8px; letter-spacing: 1px; }.vans-product-rating span { margin-left: 5px; color: #777; font-size: 6px; letter-spacing: .8px; }
+.vans-product-copy > strong { display: block; margin-bottom: 10px; font-size: 12px; }
+.vans-buy-actions { display: grid; grid-template-columns: 1fr auto; align-items: stretch; gap: 6px; }.vans-buy-actions form { min-width: 0; margin: 0; }.vans-add-button { width: 100%; min-height: 37px; padding: 0 11px; display: flex; justify-content: space-between; align-items: center; border: 0; color: #fff; background: var(--vans-red); font: 800 8px 'DM Sans',sans-serif; letter-spacing: .4px; cursor: pointer; }.vans-add-button:hover { background: #111; }.vans-buy-now { height: 100%; padding: 0 8px; border: 1px solid #111; color: #111; background: white; font: 800 7px 'DM Sans',sans-serif; cursor: pointer; }.vans-buy-now:hover { color: white; background: #111; }
+.vans-empty { min-height: 230px; padding: 35px 20px; display: grid; justify-items: center; align-content: center; text-align: center; background: white; border: 1px solid #ddd; }
+.vans-empty-logo { color: var(--vans-red); font: 700 38px 'Oswald',Impact,sans-serif; }.vans-empty p { margin: 10px 0 5px; font: 700 21px 'Oswald',Impact,sans-serif; }.vans-empty small { max-width: 400px; margin-bottom: 18px; color: #666; font-size: 9px; line-height: 1.6; }
+.vans-no-results { padding: 30px 10px; color: #555; text-align: center; font-size: 10px; }
+.vans-brand-band { min-height: 300px; padding: 50px 8%; display: grid; justify-items: center; align-content: center; text-align: center; background: #111; }.vans-brand-band .vans-eyebrow { color: #ff453b; }.vans-brand-band h2 { font-size: clamp(36px,7vw,75px); }.vans-brand-band a { margin-top: 20px; color: #fff; font-size: 9px; text-decoration-color: var(--vans-red); text-underline-offset: 5px; }.vans-brand-band a span { color: #ff453b; }
+.vans-footer { min-height: 66px; padding: 15px max(5%,calc((100vw - 1240px)/2)); display: flex; align-items: center; gap: 24px; background: #fff; }.vans-footer span { margin-right: auto; color: var(--vans-red); font: 700 23px 'Oswald',Impact,sans-serif; }.vans-footer a { color: #333; font-size: 8px; text-decoration: none; }.vans-footer a:hover { color: var(--vans-red); }
+.vans-footer a.vans-footer-signout { padding: 9px 12px; color: var(--vans-red); border: 1px solid var(--vans-red); font-weight: 800; }
+@media (max-width: 700px) {
+  .vans-header { min-height: 58px; padding: 0 14px; gap: 9px; }.vans-wordmark { font-size: 27px; }.vans-header nav { gap: 10px; }.vans-header nav a,.vans-header-actions a,.vans-header-actions span { font-size: 8px; }.vans-header-actions { gap: 10px; }.vans-header-actions > span { display: none; }.vans-header-actions a.vans-signout { min-height: 31px; padding: 0 9px; gap: 5px; font-size: 8px; }
+  .vans-hero { min-height: 540px; padding: 45px 7% 55px; grid-template-columns: 1fr; align-content: center; gap: 22px; }.vans-hero::before { inset: 30% 0 0; background: linear-gradient(0deg,#14141420,#111),linear-gradient(120deg,#40100d,#be211a 55%,#151515); }.vans-hero-copy { z-index: 2; }.vans-hero h1 { font-size: clamp(49px,12vw,74px); }.vans-hero-art { width: 80%; height: 220px; min-height: 220px; justify-self: end; }.vans-hero-type { font-size: 19px; }.vans-checker { width: 62px; height: 62px; background-size: 12px 12px; }.vans-hero-shoe { height: 30%; }.vans-hero-scroll { left: 7%; transform: none; }
+  .vans-categories,.vans-collection { padding: 38px 5%; }.vans-category-links { gap: 8px; }.vans-category-art { height: clamp(110px,31vw,185px); }.vans-category-links > a > strong { font-size: 9px; }.vans-collection-heading { align-items: start; }.vans-collection-heading h2 { font-size: 26px; }.vans-collection-heading > span { padding-top: 20px; font-size: 7px; }
+  .vans-tools { grid-template-columns: 1fr 1fr; }.vans-tools .vans-search { grid-column: 1/-1; }.vans-product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }.vans-product-image { height: clamp(170px,45vw,260px); }.vans-product-copy { padding: 10px; }.vans-product-copy h3 { font-size: 11px; }.vans-footer { flex-wrap: wrap; gap: 10px 17px; padding: 14px 5%; }.vans-footer span { width: 100%; margin: 0; }
+}
+@media (max-width: 390px) { .vans-header nav a:nth-child(3) { display: none; }.vans-header nav { margin-left: auto; }.vans-header-actions { gap: 7px; }.vans-category-links { grid-template-columns: repeat(3,minmax(0,1fr)); }.vans-category-art { height: 100px; }.vans-collection-heading h2 { font-size: 23px; } }

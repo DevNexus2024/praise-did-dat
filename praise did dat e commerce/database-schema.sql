@@ -39,7 +39,9 @@ CREATE TABLE IF NOT EXISTS admins (
 CREATE TABLE IF NOT EXISTS catalog_items (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   kind ENUM('product', 'service') NOT NULL,
+  brand VARCHAR(32) NOT NULL DEFAULT 'praise',
   name VARCHAR(160) NOT NULL,
+  category VARCHAR(80) NULL,
   description TEXT NOT NULL,
   price DECIMAL(10,2) NULL,
   currency CHAR(3) NOT NULL DEFAULT 'SZL',
@@ -49,6 +51,7 @@ CREATE TABLE IF NOT EXISTS catalog_items (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   KEY idx_catalog_kind_active (kind, active),
+  KEY idx_catalog_brand_kind_active (brand, kind, active),
   KEY idx_catalog_created_at (created_at),
   CONSTRAINT chk_catalog_price_nonnegative CHECK (price IS NULL OR price >= 0)
 ) ENGINE=InnoDB;
